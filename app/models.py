@@ -10,6 +10,8 @@ from django.db.models import Manager as GeoManager
 class Facility(models.Model):
 
     id = models.AutoField(primary_key=True)
+    facilities_eq_id = models.CharField(max_length=255, help_text=_(
+        "facilities_eq_id"), verbose_name=_("facilities_eq_id"), null=True)
     facilities_address = models.CharField(max_length=500, help_text=_(
         "facilities_address"), verbose_name=_("facilities_address"), null=True)
     facilities_type = models.CharField(max_length=255, help_text=_(

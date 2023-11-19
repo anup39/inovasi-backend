@@ -2,7 +2,8 @@ from rest_framework import serializers
 from .models import Facility
 
 
-class FacilityFileUploadSerializer(serializers.Serializer):
+class FileUploadSerializer(serializers.Serializer):
+    sheet = serializers.CharField()
     file = serializers.FileField()
 
 

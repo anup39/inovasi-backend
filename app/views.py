@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from .models import Facility
 from .tasks import handleExampleTask
-from .serializer import FacilityFileUploadSerializer, FacilitySerializer
+from .serializer import FileUploadSerializer, FacilitySerializer
 from django.contrib.gis.geos import Point
 from rest_framework import generics, status
 from drf_yasg import openapi
@@ -23,16 +23,18 @@ class ExampleViewSet(viewsets.ViewSet):
         return Response(data)
 
 
-class FacilityFileUploadAPIView(generics.CreateAPIView):
-    serializer_class = FacilityFileUploadSerializer
+class FileUploadAPIView(generics.CreateAPIView):
+    serializer_class = FileUploadSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        sheet = serializer.validated_data['sheet']
         excel_file = serializer.validated_data['file']
 
         print(excel_file, 'excel file')
+        print(sheet, 'sheet')
 
         # Process Excel file using Pandas
         try:
@@ -44,17 +46,18 @@ class FacilityFileUploadAPIView(generics.CreateAPIView):
                 row['facilities_long'], row['facilities_lat']), axis=1)
             facilities_data = df.to_dict(orient='records')
 
-            # # Create Facility objects
-            Facility.objects.bulk_create([Facility(
-                facilities_address=data['facilities_address'],
-                facilities_type=data['facilities_type'],
-                facilities_lat=data['facilities_lat'],
-                facilities_long=data['facilities_long'],
-                facilites_rspo=data['facilites_rspo'],
-                facilites_date_update=data['facilites_date_update'],
-                geom=data['geom'],
-                # Add other fields accordingly
-            ) for data in facilities_data])
+            # # # Create Facility objects
+            # Facility.objects.bulk_create([Facility(
+            #     facilities_eq_id=data['facilities_eq_id'],
+            #     facilities_address=data['facilities_address'],
+            #     facilities_type=data['facilities_type'],
+            #     facilities_lat=data['facilities_lat'],
+            #     facilities_long=data['facilities_long'],
+            #     facilites_rspo=data['facilites_rspo'],
+            #     facilites_date_update=data['facilites_date_update'],
+            #     geom=data['geom'],
+            #     # Add other fields accordingly
+            # ) for data in facilities_data])
 
             return Response({'message': 'Data uploaded successfully'}, status=status.HTTP_201_CREATED)
         except Exception as e:
