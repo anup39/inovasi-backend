@@ -21,12 +21,14 @@ django-filter==23.2
 django-timezone-field==5.1
 djangorestframework==3.14.0
 drf-yasg==1.21.6
+et-xmlfile==1.1.0
 Fiona==1.9.4.post1
 GDAL==3.6.0
 geopandas==0.13.2
 inflection==0.5.1
 kombu==5.3.1
 numpy==1.25.0
+openpyxl==3.1.2
 packaging==23.1
 pandas==2.0.3
 prompt-toolkit==3.0.39

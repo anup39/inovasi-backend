@@ -1,3 +1,3 @@
 POSTGRES_USER=postgres
-POSTGRES_DB=b3d
+POSTGRES_DB=inovasi
 POSTGRES_PASSWORD=postgres
