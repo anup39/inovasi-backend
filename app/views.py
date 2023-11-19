@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import viewsets
-from .models import Facility, Refinery, Mill, Agriplot
+from .models import Facility, Refinery, Mill, Agriplot, Tracetomill, Tracetoplantation
 from .tasks import handleExampleTask
 from .serializer import FileUploadSerializer, ShapeFileUploadSerializer, FacilitySerializer
 from django.contrib.gis.geos import Point
@@ -209,6 +209,42 @@ class FileUploadAPIView(generics.CreateAPIView):
                     # Add other fields accordingly
                 ) for data in mill_data])
 
+                return Response({'message': f'{sheet} Data uploaded successfully'}, status=status.HTTP_201_CREATED)
+
+            if sheet == "TTM":
+                df = pd.read_excel(file, sheet_name=sheet)
+                df.fillna(0, inplace=True)
+                ttm_data = df.to_dict(orient='records')
+
+                Tracetomill.objects.bulk_create([Tracetomill(
+                    facility_eq_id=data['facility_eq_id'],
+                    mill_eq_id=data['mill_eq_id'],
+                    mill_uml_id=data['mill_uml_id'],
+                    mill_name=data['mill_name'],
+                    ttm_source_type=data['ttm_source_type'],
+                    ttm_year_period=data['ttm_year_period'],
+                    ttm_date_update=data['ttm_date_update'],
+                ) for data in ttm_data])
+                return Response({'message': f'{sheet} Data uploaded successfully'}, status=status.HTTP_201_CREATED)
+
+            if sheet == "TTP":
+                df = pd.read_excel(file, sheet_name=sheet)
+                df.fillna(0, inplace=True)
+                ttp_data = df.to_dict(orient='records')
+
+                Tracetoplantation.objects.bulk_create([Tracetoplantation(
+                    mill_eq_id=data['mill_eq_id'],
+                    mill_uml_id=data['mill_uml_id'],
+                    mill_name=data['mill_name'],
+                    agriplot_eq_id=data['agriplot_eq_id'],
+                    agriplot_type=data['agriplot_type'],
+                    agriplot_estate_name_id=data['agriplot_estate_name_id'],
+                    agriplot_estate_name=data['agriplot_estate_name'],
+                    ttp_source_type=data['ttp_source_type'],
+                    ttp_year_period=data['ttp_year_period'],
+                    ttp_date_update=data['ttp_date_update'],
+
+                ) for data in ttp_data])
                 return Response({'message': f'{sheet} Data uploaded successfully'}, status=status.HTTP_201_CREATED)
 
             if sheet == "Shapefile":

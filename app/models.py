@@ -3,7 +3,6 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.gis.db import models
 from django.db.models import Manager as GeoManager
 
-
 # Create your models here.
 
 
@@ -209,3 +208,69 @@ class Agriplot(models.Model):
 
     def __str__(self):
         return str(self.Mill_Name)
+
+
+class Tracetomill(models.Model):
+    id = models.AutoField(primary_key=True)
+    facility_eq_id = models.CharField(max_length=255, help_text=_(
+        "facility_eq_id"), verbose_name=_("facility_eq_id"), null=True)
+    mill_eq_id = models.CharField(max_length=255, help_text=_(
+        "mill_eq_id"), verbose_name=_("mill_eq_id"), null=True)
+    mill_uml_id = models.CharField(max_length=255, help_text=_(
+        "mill_uml_id"), verbose_name=_("mill_uml_id"), null=True)
+    mill_name = models.CharField(max_length=255, help_text=_(
+        "mill_name"), verbose_name=_("mill_name"), null=True)
+    ttm_source_type = models.CharField(max_length=255, help_text=_(
+        "ttm_source_type"), verbose_name=_("ttm_source_type"), null=True)
+    ttm_year_period = models.CharField(max_length=255, help_text=_(
+        "ttm_year_period"), verbose_name=_("ttm_year_period"), null=True)
+    ttm_date_update = models.CharField(max_length=255, help_text=_(
+        "ttm_date_update"), verbose_name=_("ttm_date_update"), null=True)
+    created_at = models.DateTimeField(default=timezone.now, help_text=_(
+        "Creation date"), verbose_name=_("Created at"))
+    is_display = models.BooleanField(default=True)
+    is_edited = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _("Tracetomill")
+        verbose_name_plural = _("Tracetomills")
+
+    def __str__(self):
+        return str(self.mill_name)
+
+
+class Tracetoplantation(models.Model):
+    id = models.AutoField(primary_key=True)
+    mill_eq_id = models.CharField(max_length=255, help_text=_(
+        "mill_eq_id"), verbose_name=_("mill_eq_id"), null=True)
+    mill_uml_id = models.CharField(max_length=255, help_text=_(
+        "mill_uml_id"), verbose_name=_("mill_uml_id"), null=True)
+    mill_name = models.CharField(max_length=255, help_text=_(
+        "mill_name"), verbose_name=_("mill_name"), null=True)
+    agriplot_eq_id = models.CharField(max_length=255, help_text=_(
+        "agriplot_eq_id"), verbose_name=_("agriplot_eq_id"), null=True)
+    agriplot_type = models.CharField(max_length=255, help_text=_(
+        "agriplot_type"), verbose_name=_("agriplot_type"), null=True)
+    agriplot_estate_name_id = models.CharField(max_length=255, help_text=_(
+        "agriplot_estate_name_id"), verbose_name=_("agriplot_estate_name_id"), null=True)
+    agriplot_estate_name = models.CharField(max_length=255, help_text=_(
+        "agriplot_estate_name"), verbose_name=_("agriplot_estate_name"), null=True)
+    ttp_source_type = models.CharField(max_length=255, help_text=_(
+        "ttp_source_type"), verbose_name=_("ttp_source_type"), null=True)
+    ttp_year_period = models.CharField(max_length=255, help_text=_(
+        "ttp_year_period"), verbose_name=_("ttp_year_period"), null=True)
+    ttp_date_update = models.CharField(max_length=255, help_text=_(
+        "ttp_date_update"), verbose_name=_("ttp_date_update"), null=True)
+    created_at = models.DateTimeField(default=timezone.now, help_text=_(
+        "Creation date"), verbose_name=_("Created at"))
+    is_display = models.BooleanField(default=True)
+    is_edited = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _("Tracetoplantation")
+        verbose_name_plural = _("Tracetoplantations")
+
+    def __str__(self):
+        return str(self.mill_name)
