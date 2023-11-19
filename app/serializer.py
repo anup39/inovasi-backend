@@ -7,6 +7,10 @@ class FileUploadSerializer(serializers.Serializer):
     file = serializers.FileField()
 
 
+class ShapeFileUploadSerializer(serializers.Serializer):
+    file = serializers.FileField()
+
+
 class FacilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Facility
