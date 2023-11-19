@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import viewsets
-from .models import Facility, Refinery, Mill
+from .models import Facility, Refinery, Mill, Agriplot
 from .tasks import handleExampleTask
 from .serializer import FileUploadSerializer, ShapeFileUploadSerializer, FacilitySerializer
 from django.contrib.gis.geos import Point
@@ -18,7 +18,6 @@ from django.contrib.gis.geos import (
 
 
 def checkUploadFileValidationGlobal(shape_file):
-    print("here validation")
 
     if not shape_file.name.endswith('.zip'):
         raise ValidationError('The file must be a ZIP archive.')
@@ -45,31 +44,66 @@ def checkUploadFileValidationGlobal(shape_file):
 
 def handleShapefileGlobal(shapefile_obj, model):
     shape_file = shapefile_obj
+    print(shape_file, 'shapefile')
     with zipfile.ZipFile(shape_file, "r") as zip_ref:
         zip_ref.extractall(str(shape_file))
     shape = glob.glob(r'{}/**/*.shp'.format(str(shape_file)),
                       recursive=True)[0]
+    print(shape, 'shape')
     gdf = gpd.read_file(shape)
+    print(gdf.head(), 'gdf')
+    gdf.fillna(0, inplace=True)
     total_bounds = gdf.total_bounds
     bound_dict = {"total_bounds": total_bounds.tolist()}
-    print(gdf.columns)
     for index, row in gdf.iterrows():
-        # print(index, row)
         dropped_geometry = row.drop(["geometry"])
         dropped_geometry_dict = dropped_geometry.to_dict()
         geom = GEOSGeometry(str(row["geometry"]))
-
-        print(geom.geom_type)
-
-        # if geom.geom_type == "MultiPolygon":
-        #     for polygon in geom:
-        #         # new_geom = Polygon(polygon.exterior)
-        #         model.objects.create(
-        #             layer=layer, attributes=dropped_geometry_dict, geom=polygon)
-        # else:
-        #     model.objects.create(
-        #         layer=layer,  attributes=dropped_geometry_dict, geom=geom)
-        #     pass
+        if geom.geom_type == "MultiPolygon":
+            for polygon in geom:
+                # new_geom = Polygon(polygon.exterior)
+                model.objects.create(
+                    ID_Mill=row['ID_Mill'],
+                    Mill_Name=row['Mill_Name'],
+                    Ownership=row['Ownership'],
+                    Subsidiary=row['Subsidiary'],
+                    Estate=row['Estate'],
+                    ID_Estate=row['ID_Estate'],
+                    AgriplotID=row['AgriplotID'],
+                    TypeOfSupp=row['TypeOfSupp'],
+                    Village=row['Village'],
+                    SubDistric=row['SubDistric'],
+                    District=row['District'],
+                    Province=row['Province'],
+                    Country=row['Country'],
+                    Planted_Ar=row['Planted_Ar'],
+                    YearUpdate=row['YearUpdate'],
+                    RiskAssess=row['RiskAssess'],
+                    GHG_LUC=row['GHG_LUC'],
+                    geom=polygon
+                )
+        else:
+            model.objects.create(
+                ID_Mill=row['ID_Mill'],
+                Mill_Name=row['Mill_Name'],
+                Ownership=row['Ownership'],
+                Subsidiary=row['Subsidiary'],
+                Estate=row['Estate'],
+                ID_Estate=row['ID_Estate'],
+                AgriplotID=row['AgriplotID'],
+                TypeOfSupp=row['TypeOfSupp'],
+                Village=row['Village'],
+                SubDistric=row['SubDistric'],
+                District=row['District'],
+                Province=row['Province'],
+                Country=row['Country'],
+                Planted_Ar=row['Planted_Ar'],
+                YearUpdate=row['YearUpdate'],
+                RiskAssess=row['RiskAssess'],
+                GHG_LUC=row['GHG_LUC'],
+                geom=geom
+            )
+            pass
 
     return bound_dict
 
@@ -148,7 +182,6 @@ class FileUploadAPIView(generics.CreateAPIView):
                 df['geom'] = df.apply(lambda row: Point(
                     row['mill_long'], row['mill_lat']), axis=1)
                 mill_data = df.to_dict(orient='records')
-                print(df.head().to_dict(orient='records'))
 
                 Mill.objects.bulk_create([Mill(
                     mill_company_name=data['mill_company_name'],
@@ -179,11 +212,10 @@ class FileUploadAPIView(generics.CreateAPIView):
                 return Response({'message': f'{sheet} Data uploaded successfully'}, status=status.HTTP_201_CREATED)
 
             if sheet == "Shapefile":
-                print(file, 'file')
 
                 checkUploadFileValidationGlobal(file)
 
-                handleShapefileGlobal(file, "Agriplot")
+                handleShapefileGlobal(file, Agriplot)
 
                 return Response({'message': f'{sheet} Data uploaded successfully'}, status=status.HTTP_201_CREATED)
 

@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Facility, Refinery, Mill
+from .models import Facility, Refinery, Mill, Agriplot
 
 # Register your models here.
 admin.site.register(Facility)
 admin.site.register(Refinery)
 admin.site.register(Mill)
+admin.site.register(Agriplot)

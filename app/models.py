@@ -156,3 +156,56 @@ class Mill(models.Model):
 
     def __str__(self):
         return str(self.mill_address)
+
+
+class Agriplot(models.Model):
+    id = models.AutoField(primary_key=True)
+    ID_Mill = models.CharField(max_length=255, help_text=_(
+        "ID_Mill"), verbose_name=_("ID_Mill"), null=True)
+    Mill_Name = models.CharField(max_length=255, help_text=_(
+        "Mill_Name"), verbose_name=_("Mill_Name"), null=True)
+    Ownership = models.CharField(max_length=255, help_text=_(
+        "Ownership"), verbose_name=_("Ownership"), null=True)
+    Subsidiary = models.CharField(max_length=255, help_text=_(
+        "Subsidiary"), verbose_name=_("Subsidiary"), null=True)
+    Estate = models.CharField(max_length=255, help_text=_(
+        "Estate"), verbose_name=_("Estate"), null=True)
+    ID_Estate = models.CharField(max_length=255, help_text=_(
+        "ID_Estate"), verbose_name=_("ID_Estate"), null=True)
+    AgriplotID = models.CharField(max_length=255, help_text=_(
+        "AgriplotID"), verbose_name=_("AgriplotID"), null=True)
+    TypeOfSupp = models.CharField(max_length=255, help_text=_(
+        "TypeOfSupp"), verbose_name=_("TypeOfSupp"), null=True)
+    Village = models.CharField(max_length=255, help_text=_(
+        "Village"), verbose_name=_("Village"), null=True)
+    SubDistric = models.CharField(max_length=255, help_text=_(
+        "SubDistric"), verbose_name=_("SubDistric"), null=True)
+    District = models.CharField(max_length=255, help_text=_(
+        "District"), verbose_name=_("District"), null=True)
+    Province = models.CharField(max_length=255, help_text=_(
+        "Province"), verbose_name=_("Province"), null=True)
+    Country = models.CharField(max_length=255, help_text=_(
+        "Country"), verbose_name=_("Country"), null=True)
+    Planted_Ar = models.CharField(max_length=255, help_text=_(
+        "Planted_Ar"), verbose_name=_("Planted_Ar"), null=True)
+    YearUpdate = models.CharField(max_length=255, help_text=_(
+        "YearUpdate"), verbose_name=_("YearUpdate"), null=True)
+    RiskAssess = models.CharField(max_length=255, help_text=_(
+        "RiskAssess"), verbose_name=_("RiskAssess"), null=True)
+    GHG_LUC = models.CharField(max_length=255, help_text=_(
+        "GHG_LUC"), verbose_name=_("GHG_LUC"), null=True)
+    created_at = models.DateTimeField(default=timezone.now, help_text=_(
+        "Creation date"), verbose_name=_("Created at"))
+    geom = models.PolygonField(srid=4326, blank=True, null=True, dim=3)
+    is_display = models.BooleanField(default=True)
+    is_edited = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+
+    objects = GeoManager()
+
+    class Meta:
+        verbose_name = _("Agriplot")
+        verbose_name_plural = _("Agriplots")
+
+    def __str__(self):
+        return str(self.Mill_Name)
