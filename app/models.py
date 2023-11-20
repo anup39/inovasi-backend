@@ -13,6 +13,8 @@ class Facility(models.Model):
         "facilities_eq_id"), verbose_name=_("facilities_eq_id"), null=True)
     facilities_name = models.CharField(max_length=255, help_text=_(
         "facilities_name"), verbose_name=_("facilities_name"), null=True)
+    facilities_country = models.CharField(max_length=500, help_text=_(
+        "facilities_country"), verbose_name=_("facilities_country"), null=True)
     facilities_address = models.CharField(max_length=500, help_text=_(
         "facilities_address"), verbose_name=_("facilities_address"), null=True)
     facilities_type = models.CharField(max_length=255, help_text=_(
@@ -57,6 +59,8 @@ class Refinery(models.Model):
         "refinery_name"), verbose_name=_("refinery_name"), null=True)
     refinery_address = models.CharField(max_length=500, help_text=_(
         "refinery_address"), verbose_name=_("refinery_address"), null=True)
+    refinery_country = models.CharField(max_length=500, help_text=_(
+        "refinery_country"), verbose_name=_("refinery_country"), null=True)
     refinery_type = models.CharField(max_length=255, help_text=_(
         "refinery_type"), verbose_name=_("refinery_type"), null=True)
     refinery_lat = models.DecimalField(
@@ -159,10 +163,10 @@ class Mill(models.Model):
 
 class Agriplot(models.Model):
     id = models.AutoField(primary_key=True)
-    ID_Mill = models.CharField(max_length=255, help_text=_(
-        "ID_Mill"), verbose_name=_("ID_Mill"), null=True)
-    Mill_Name = models.CharField(max_length=255, help_text=_(
-        "Mill_Name"), verbose_name=_("Mill_Name"), null=True)
+    # ID_Mill = models.CharField(max_length=255, help_text=_(
+    #     "ID_Mill"), verbose_name=_("ID_Mill"), null=True)
+    # Mill_Name = models.CharField(max_length=255, help_text=_(
+    #     "Mill_Name"), verbose_name=_("Mill_Name"), null=True)
     Ownership = models.CharField(max_length=255, help_text=_(
         "Ownership"), verbose_name=_("Ownership"), null=True)
     Subsidiary = models.CharField(max_length=255, help_text=_(
@@ -207,7 +211,7 @@ class Agriplot(models.Model):
         verbose_name_plural = _("Agriplots")
 
     def __str__(self):
-        return str(self.Mill_Name)
+        return str(self.id)
 
 
 class Tracetomill(models.Model):

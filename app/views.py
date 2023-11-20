@@ -142,6 +142,7 @@ class FileUploadAPIView(generics.CreateAPIView):
                 Facility.objects.bulk_create([Facility(
                     facilities_eq_id=data['facilities_eq_id'],
                     facilities_name=data['facilities_name'],
+                    facilities_country=data['facilities_country'],
                     facilities_address=data['facilities_address'],
                     facilities_type=data['facilities_type'],
                     facilities_lat=data['facilities_lat'],
@@ -164,6 +165,7 @@ class FileUploadAPIView(generics.CreateAPIView):
                 Refinery.objects.bulk_create([Refinery(
                     refinery_eq_id=data['refinery_eq_id'],
                     refinery_name=data['refinery_name'],
+                    refinery_country=data['refinery_country'],
                     refinery_address=data['refinery_address'],
                     refinery_type=data['refinery_type'],
                     refinery_lat=data['refinery_lat'],
@@ -262,3 +264,103 @@ class FileUploadAPIView(generics.CreateAPIView):
 class FacilityViewSet(viewsets.ModelViewSet):
     queryset = Facility.objects.filter(is_display=True)
     serializer_class = FacilitySerializer
+
+
+class PieChartViewSet(generics.CreateAPIView):
+    serializer_class = FacilitySerializer
+
+    def get(self, request, section, distinct,  *args, **kwargs):
+        if section == "facility" and distinct == "country":
+            from django.db.models import Count, F
+            # Get distinct counts
+            data = (
+                Facility.objects.values(display=F('facilities_country'))
+                .annotate(count=Count('facilities_country'))
+                .order_by('facilities_country')
+            )
+            return Response(data)
+
+        if section == "facility" and distinct == "type":
+            from django.db.models import Count, F
+            # Get distinct counts
+            data = (
+                Facility.objects.values(display=F('facilities_type'))
+                .annotate(count=Count('facilities_type'))
+                .order_by('facilities_type')
+            )
+            return Response(data)
+
+        if section == "facility" and distinct == "rspo":
+            from django.db.models import Count, F
+            # Get distinct counts
+            data = (
+                Facility.objects.values(display=F('facilites_rspo'))
+                .annotate(count=Count('facilites_rspo'))
+                .order_by('facilites_rspo')
+            )
+            return Response(data)
+
+        if section == "refinery" and distinct == "country":
+            from django.db.models import Count, F
+            # Get distinct counts
+            data = (
+                Refinery.objects.values(display=F('refinery_country'))
+                .annotate(count=Count('refinery_country'))
+                .order_by('refinery_country')
+            )
+
+            return Response(data)
+
+        if section == "refinery" and distinct == "type":
+            from django.db.models import Count, F
+            # Get distinct counts
+            data = (
+                Refinery.objects.values(display=F('refinery_type'))
+                .annotate(count=Count('refinery_type'))
+                .order_by('refinery_type')
+            )
+
+            return Response(data)
+
+        if section == "refinery" and distinct == "rspo":
+            from django.db.models import Count, F
+            # Get distinct counts
+            data = (
+                Refinery.objects.values(display=F('refinery_rspo'))
+                .annotate(count=Count('refinery_rspo'))
+                .order_by('refinery_rspo')
+            )
+
+            return Response(data)
+
+        if section == "mill" and distinct == "country":
+            from django.db.models import Count, F
+            # Get distinct counts
+            data = (
+                Mill.objects.values(display=F('mill_country'))
+                .annotate(count=Count('mill_country'))
+                .order_by('mill_country')
+            )
+
+            return Response(data)
+
+        if section == "mill" and distinct == "type":
+            from django.db.models import Count, F
+            # Get distinct counts
+            data = (
+                Mill.objects.values(display=F('mill_type'))
+                .annotate(count=Count('mill_type'))
+                .order_by('mill_type')
+            )
+
+            return Response(data)
+
+        if section == "mill" and distinct == "rspo":
+            from django.db.models import Count, F
+            # Get distinct counts
+            data = (
+                Mill.objects.values(display=F('mill_rspo'))
+                .annotate(count=Count('mill_rspo'))
+                .order_by('mill_rspo')
+            )
+            return Response(data)
