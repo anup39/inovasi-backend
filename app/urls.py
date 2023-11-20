@@ -1,5 +1,5 @@
 from rest_framework import routers
-from .views import ExampleViewSet, FileUploadAPIView, FacilityViewSet
+from .views import ExampleViewSet, FileUploadAPIView, FacilityViewSet, PieChartViewSet
 from django.urls import path, include
 
 
@@ -13,4 +13,6 @@ urlpatterns = [
          name='example-api'),
     path('upload-facility/', FileUploadAPIView.as_view(),
          name='upload-facility'),
+    path('pie-chart/<section>/<distinct>/', PieChartViewSet.as_view(),
+         name='pie-chart'),
 ]
