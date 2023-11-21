@@ -63,8 +63,8 @@ def handleShapefileGlobal(shapefile_obj, model):
             for polygon in geom:
                 # new_geom = Polygon(polygon.exterior)
                 model.objects.create(
-                    ID_Mill=row['ID_Mill'],
-                    Mill_Name=row['Mill_Name'],
+                    # ID_Mill=row['ID_Mill'],
+                    # Mill_Name=row['Mill_Name'],
                     Ownership=row['Ownership'],
                     Subsidiary=row['Subsidiary'],
                     Estate=row['Estate'],
@@ -80,12 +80,13 @@ def handleShapefileGlobal(shapefile_obj, model):
                     YearUpdate=row['YearUpdate'],
                     RiskAssess=row['RiskAssess'],
                     GHG_LUC=row['GHG_LUC'],
+                    Status=row['Status'],
                     geom=polygon
                 )
         else:
             model.objects.create(
-                ID_Mill=row['ID_Mill'],
-                Mill_Name=row['Mill_Name'],
+                # ID_Mill=row['ID_Mill'],
+                # Mill_Name=row['Mill_Name'],
                 Ownership=row['Ownership'],
                 Subsidiary=row['Subsidiary'],
                 Estate=row['Estate'],
@@ -101,6 +102,7 @@ def handleShapefileGlobal(shapefile_obj, model):
                 YearUpdate=row['YearUpdate'],
                 RiskAssess=row['RiskAssess'],
                 GHG_LUC=row['GHG_LUC'],
+                Status=row['Status'],
                 geom=geom
             )
             pass

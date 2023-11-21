@@ -163,10 +163,10 @@ class Mill(models.Model):
 
 class Agriplot(models.Model):
     id = models.AutoField(primary_key=True)
-    # ID_Mill = models.CharField(max_length=255, help_text=_(
-    #     "ID_Mill"), verbose_name=_("ID_Mill"), null=True)
-    # Mill_Name = models.CharField(max_length=255, help_text=_(
-    #     "Mill_Name"), verbose_name=_("Mill_Name"), null=True)
+    ID_Mill = models.CharField(max_length=255, help_text=_(
+        "ID_Mill"), verbose_name=_("ID_Mill"), null=True)
+    Mill_Name = models.CharField(max_length=255, help_text=_(
+        "Mill_Name"), verbose_name=_("Mill_Name"), null=True)
     Ownership = models.CharField(max_length=255, help_text=_(
         "Ownership"), verbose_name=_("Ownership"), null=True)
     Subsidiary = models.CharField(max_length=255, help_text=_(
@@ -197,9 +197,12 @@ class Agriplot(models.Model):
         "RiskAssess"), verbose_name=_("RiskAssess"), null=True)
     GHG_LUC = models.CharField(max_length=255, help_text=_(
         "GHG_LUC"), verbose_name=_("GHG_LUC"), null=True)
+    Status = models.CharField(max_length=255, help_text=_(
+        "Status"), verbose_name=_("Status"), null=True)
     created_at = models.DateTimeField(default=timezone.now, help_text=_(
         "Creation date"), verbose_name=_("Created at"))
     geom = models.PolygonField(srid=4326, blank=True, null=True, dim=3)
+    actual_supplier = models.BooleanField(default=True)
     is_display = models.BooleanField(default=True)
     is_edited = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
@@ -278,3 +281,41 @@ class Tracetoplantation(models.Model):
 
     def __str__(self):
         return str(self.mill_name)
+
+
+class PlantedOutsideLandRegistration(models.Model):
+    id = models.AutoField(primary_key=True)
+    Mukim = models.CharField(max_length=255, help_text=_(
+        "Mukim"), verbose_name=_("Mukim"), null=True)
+    ID_Mukim = models.CharField(max_length=255, help_text=_(
+        "ID_Mukim"), verbose_name=_("ID_Mukim"), null=True)
+    Daerah = models.CharField(max_length=255, help_text=_(
+        "Daerah"), verbose_name=_("Daerah"), null=True)
+    ID_Daerah = models.CharField(max_length=255, help_text=_(
+        "ID_Daerah"), verbose_name=_("ID_Daerah"), null=True)
+    Negeri = models.CharField(max_length=255, help_text=_(
+        "Negeri"), verbose_name=_("Negeri"), null=True)
+    ID_Negeri = models.CharField(max_length=255, help_text=_(
+        "ID_Negeri"), verbose_name=_("ID_Negeri"), null=True)
+    Country = models.CharField(max_length=255, help_text=_(
+        "Country"), verbose_name=_("Country"), null=True)
+    Note = models.CharField(max_length=255, help_text=_(
+        "Note"), verbose_name=_("Note"), null=True)
+    ttp_source_type = models.CharField(max_length=255, help_text=_(
+        "ttp_source_type"), verbose_name=_("ttp_source_type"), null=True)
+    Status = models.CharField(max_length=255, help_text=_(
+        "Status"), verbose_name=_("Status"), null=True)
+    created_at = models.DateTimeField(default=timezone.now, help_text=_(
+        "Creation date"), verbose_name=_("Created at"))
+    geom = models.PolygonField(srid=4326, blank=True, null=True, dim=3)
+
+    is_display = models.BooleanField(default=True)
+    is_edited = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _("PlantedOutsideLandRegistration")
+        verbose_name_plural = _("PlantedOutsideLandRegistrations")
+
+    def __str__(self):
+        return str(self.Mukim)
