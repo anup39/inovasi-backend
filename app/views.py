@@ -278,8 +278,7 @@ class PieChartViewSet(generics.CreateAPIView):
                 .annotate(count=Count('facilities_country'))
                 .order_by('facilities_country')
             )
-            for entry in data:
-                entry['disable'] = False
+
             return Response(data)
 
         if section == "facility" and distinct == "type":
@@ -291,8 +290,6 @@ class PieChartViewSet(generics.CreateAPIView):
                 .order_by('facilities_type')
             )
 
-            for entry in data:
-                entry['disable'] = False
             return Response(data)
 
         if section == "facility" and distinct == "rspo":
@@ -304,8 +301,6 @@ class PieChartViewSet(generics.CreateAPIView):
                 .order_by('facilites_rspo')
             )
 
-            for entry in data:
-                entry['disable'] = False
             return Response(data)
 
         if section == "refinery" and distinct == "country":
@@ -316,9 +311,6 @@ class PieChartViewSet(generics.CreateAPIView):
                 .annotate(count=Count('refinery_country'))
                 .order_by('refinery_country')
             )
-
-            for entry in data:
-                entry['disable'] = False
 
             return Response(data)
 
@@ -331,9 +323,6 @@ class PieChartViewSet(generics.CreateAPIView):
                 .order_by('refinery_type')
             )
 
-            for entry in data:
-                entry['disable'] = False
-
             return Response(data)
 
         if section == "refinery" and distinct == "rspo":
@@ -344,8 +333,6 @@ class PieChartViewSet(generics.CreateAPIView):
                 .annotate(count=Count('refinery_rspo'))
                 .order_by('refinery_rspo')
             )
-            for entry in data:
-                entry['disable'] = False
 
             return Response(data)
 
@@ -357,8 +344,6 @@ class PieChartViewSet(generics.CreateAPIView):
                 .annotate(count=Count('mill_country'))
                 .order_by('mill_country')
             )
-            for entry in data:
-                entry['disable'] = False
 
             return Response(data)
 
@@ -371,9 +356,6 @@ class PieChartViewSet(generics.CreateAPIView):
                 .order_by('mill_type')
             )
 
-            for entry in data:
-                entry['disable'] = False
-
             return Response(data)
 
         if section == "mill" and distinct == "rspo":
@@ -385,6 +367,4 @@ class PieChartViewSet(generics.CreateAPIView):
                 .order_by('mill_rspo')
             )
 
-            for entry in data:
-                entry['disable'] = False
             return Response(data)
